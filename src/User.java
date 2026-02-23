@@ -1,6 +1,6 @@
 public class User {
     private  String username;
-    private String []taskArray=new String[10];
+    private Task []taskArray=new Task[10];
     User(String username){
         this.username=username;
 
@@ -11,11 +11,9 @@ public class User {
     }
 
 
-    public String[] getTaskArray() {
+    public Task[] getTaskArray() {
         return taskArray;
     }
 
-    public void setTaskArray(String[] taskArray) {
-        this.taskArray = taskArray;
-    }
+
 }
