@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class UserManager {
+public class UserManager implements UserManagerInterface {
     Scanner sc=new Scanner(System.in);
     User[] existingUser = new User[5];
     User currentUser = null;

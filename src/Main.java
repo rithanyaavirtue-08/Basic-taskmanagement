@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        UserManager userManager = new UserManager();
+        UserManagerInterface userManager = new UserManager();
 
         while (true) {
             userManager.user();
-            TaskManager taskmanager = new TaskManager(userManager.getCurrentUser());
+            TaskManagerInterface taskmanager = new TaskManager(userManager.getCurrentUser());
             Integer choice = 0;
             while (choice != 5) {
                 try {

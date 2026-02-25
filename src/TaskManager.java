@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class TaskManager {
+public class TaskManager implements TaskManagerInterface{
 
     boolean yes=false;
     int taskCnt=0;

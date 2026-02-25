@@ -1,4 +1,4 @@
-public class User {
+public class User implements UserInterface {
     private  String username;
     private Task []taskArray=new Task[10];
     User(String username){

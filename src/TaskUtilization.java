@@ -1,4 +1,4 @@
-public class TaskUtilization {
+public class TaskUtilization{
     public static void taskComm(User currentUser,int i,int taskNum){
         Task Title = currentUser.getTaskArray()[i];
         System.out.print(taskNum+ ".");

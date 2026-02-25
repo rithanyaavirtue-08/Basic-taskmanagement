@@ -1,4 +1,4 @@
-public class Task {
+public class Task implements TaskInterface{
     private String title;
     private String Status;
     private String Description;
