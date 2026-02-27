@@ -1,53 +1,56 @@
-import java.util.Scanner;
+import java.util.*;
+
+import static java.lang.String.*;
 
 public class Main {
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
+        TaskManagerInterface taskManager = new TaskManager();
         UserManagerInterface userManager = new UserManager();
 
-        while (true) {
-            userManager.user();
-            TaskManagerInterface taskmanager = new TaskManager(userManager.getCurrentUser());
-            Integer choice = 0;
-            while (choice != 5) {
-                try {
 
-                    System.out.println("What you need?");
-                    System.out.println("1.Add task");
-                    System.out.println("2.List Task");
-                    System.out.println("3.Update");
-                    System.out.println("4.Delete");
-                    System.out.println("5.Exit");
-                    System.out.println("Enter your choice:");
-                    choice = Integer.valueOf(sc.nextLine());
-                    if (choice < 1 || choice > 5) {
-                        throw new Exception();
-                    }
+        while (true) {
+            User currentUser = (User) userManager.CheckUser();
+            taskManager.setCurrentUser(currentUser);
+            Integer choice = 0;//declare it
+            while (choice != 5) //unboxing
+            {
+                System.out.println("1.Add Task");
+                System.out.println("2.List all Tasks");
+                System.out.println("3.Update");
+                System.out.println("4.Delete");
+                System.out.println("5.Exit");
+                try {
+                    System.out.println("Enter your Choice:");
+                    choice = new Integer(sc.nextLine());
                 } catch (Exception e) {
-                    System.out.println("Enter proper value");
+                    System.out.println("You have to enter only numbers!");
                     continue;
                 }
+
                 if (choice == 1) {
-                    taskmanager.addTask();
+                    taskManager.addTask();
+
                 }
                 else if (choice == 2) {
-                    taskmanager.Display();
+                    taskManager.listChoice();
+
                 }
                 else if (choice == 3) {
-                    taskmanager.update();
+                    taskManager.Update();
                 }
+
                 else if (choice == 4) {
-                    taskmanager.delete();
+                    taskManager.Delete();
                 }
                 else if (choice == 5) {
-                    System.out.println("Task Manager Exited");
-                    break;
+                    System.out.println("Thanks for Using!");
                 }
                 else {
-                    System.out.println("Enter a value choice");
+                    System.out.println("Your choice is Invalid");
                 }
             }
-
         }
     }
 

@@ -1,365 +1,553 @@
+
 import java.util.Scanner;
 
-public class TaskManager implements TaskManagerInterface{
-
-    boolean yes=false;
-    int taskCnt=0;
-    User currentUser;
-
+public class TaskManager implements TaskManagerInterface
+{
     Scanner sc=new Scanner(System.in);
-    public void addTask(){
-        try
-        {while(!yes)
+    private User currentUser;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+    boolean exit = false;
+    String addedTask;
+    String action;
+    boolean yes=false;
+    boolean no=false;
+    Task task;
+    public void addTask()
+    {
+        //static method
+        boolean Description=TaskUtil.Description(currentUser);
+
+        if (!Description) {
+            System.out.println("No Task Added!");
+        }
+        else {
+            System.out.println("Previous Task Displayed!");
+        }
+
+        while (!exit)
         {
-
-            Task[] arr = currentUser.getTaskArray();
-            boolean isTaskAvailable=false;
-
-            for(int i=0;i<currentUser.getTaskArray().length;i++)
-            {
-                if(arr[i]!=null){
-                    Task Title=currentUser.getTaskArray()[i];
-
-                    System.out.print(i+1+".");
-                    System.out.println(Title.getTitle());
-                    if(Title.getStatus()==null){
-                        System.out.println("Status:To Do");
-                    }
-                    else{
-                        System.out.println("Status:"+Title.getStatus());}
-
-                    System.out.println("Description:"+Title.getDescription());
-                    isTaskAvailable=true;}
-                else{
-                    break;
-                }
-            }
-            if(isTaskAvailable){
-                System.out.println("Your previous Task displayed!");
-
-            }
-            else{
-                System.out.println("No task added before");
-            }
-
-            System.out.println("Enter your Task Title:");
-            Task taskTitle = new Task(sc.nextLine(),"To Do");
-            currentUser.getTaskArray()[taskCnt]=taskTitle;
-            while(!yes) {
-                System.out.println("Do you what to add Description?(yes/no)");
-                String con = sc.nextLine();
-                if (con.equals("yes")) {
-                    System.out.println("Enter your Description");
-                    String des=sc.nextLine();
-                    currentUser.getTaskArray()[taskCnt].setDescription(des);
-                    break;
-                }
-                else if (con.equals("no"))   {
-                    break;
-                }
-                else {
-                    System.out.println("Enter proper value of string");
-                }
-            }
-
-            taskCnt++;
-            while(!yes) {
-                System.out.println("Do you what to Continue?(yes/no)or give exit");
-                String con = sc.nextLine();
-                if (con.equals("yes")) {
-                    break;
-                }
-                else if (con.equals("no") || con.equals("exit")) {
+            try {
+                System.out.println("Enter your Title or  give 'exit' to Exit:");
+                addedTask = sc.nextLine();
+                if (addedTask.equals("exit")) {
                     throw new Exception();
                 }
-                else {
-                    System.out.println("Enter proper value of string");
-                }
-            }
-        }
-        }catch(Exception e){
-            System.out.println("Your added task exited");
 
-
-        }
-
-    }
-    public void Display(){
-        {
-            Task[] arr = currentUser.getTaskArray();
-            boolean hasTask = false;
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i] != null) {
-                    hasTask = true;
+                    Task task = new Task(addedTask, "To Do");
+                    currentUser.getTask().add(task);
+                    System.out.println("Your Task Added Successfully :) :) ");
+                while(!no)
+                {
+                    System.out.println("Do you want to Add Description?(yes/no)");
+                    String desc = sc.nextLine();
+                    if (desc.equals("yes")) {
+                        System.out.println("Enter your Description:");
+                        String taskDes = sc.nextLine();
+                        task.setDescription(taskDes);
+                        break;
+                    }
+                    else if(desc.equals("no")){
                     break;
                 }
-            }
+                else{
+                        System.out.println("Enter proper value");
+                    }
 
-            if (!hasTask) {
-                System.out.println("No task available in list");
-                return;   
+                }
+                    while(!yes)
+                    {
+                    System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                    action = sc.nextLine();
+                    TaskUtil.Continue(action);
+                    if (action.equals("no") || action.equals("exit")) {
+                        throw new Exception();
+                    }
+                    else if (action.equals("yes")) {
+                        break;
+                    }
+                    else{
+                        System.out.println("Enter proper value");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Add Task Exited!");
+                break;
             }
-
-            while (true)
-            {
-                System.out.println("What do you want to Display?");
-                System.out.println("1.Display ToDo Task");
-                System.out.println("2.Display In Progress Task");
-                System.out.println("3.Display Progress Done Task");
+        }
+    }
+    public  void listChoice(){
+        String listChoice = " ";
+        boolean exit = false;
+        int i = 0;
+        while(!no||!yes||!exit) {
+            try {
+                System.out.println("Which you want to Display! ");
+                System.out.println("1.List the Task in ToDo");
+                System.out.println("2.List  the Status of Task 'On Progress'!");
+                System.out.println("3.List the Status of Task 'Progress Done'");
                 System.out.println("4.Display All");
-                System.out.println("Enter Your Choice (or type 'exit' to exit):");
-
-                String display = sc.nextLine();
-
-                if (display.equals("exit")) {
-                    System.out.println("Exited from display section.");
-                    break;
+                System.out.println("Enter your Choice which you want to display?or give 'exit' to Exit");
+                listChoice = (sc.nextLine());
+                if (listChoice.equals("exit") || listChoice.equals("no")) {
+                    throw new Exception();
                 }
-
-                boolean isTaskAvailable = false;
-                int taskNum = 1;
-
-                for (int i = 0; i < arr.length; i++)
-                {
-                    Task task = arr[i];
-
-                    if (task == null)
-                        continue;
-
-                    String status = task.getStatus();
-
-                    if (display.equals("1") && "To Do".equals(status)) {
-                        TaskUtilization.taskComm(currentUser, i, taskNum++);
-                        System.out.println(status);
-                        isTaskAvailable = true;
-                    }
-
-                    else if (display.equals("2") && "In Progress".equals(status)) {
-                        TaskUtilization.taskComm(currentUser, i, taskNum++);
-                        System.out.println(status);
-                        isTaskAvailable = true;
-                    }
-
-                    else if (display.equals("3") && "Progress Done".equals(status)) {
-                        TaskUtilization.taskComm(currentUser, i, taskNum++);
-                        System.out.println(status);
-                        isTaskAvailable = true;
-                    }
-
-                    else if (display.equals("4")) {
-                        TaskUtilization.taskComm(currentUser, i, taskNum++);
-                        System.out.println(status);
-                        isTaskAvailable = true;
-                    }
-                }
-
-                if (!isTaskAvailable) {
-                    System.out.println("No task available in selected category.");
-                }
-
-                System.out.println("Do you want to Continue? (yes/no)");
-                String con = sc.nextLine();
-
-                if (!con.equals("yes")) {
-                    System.out.println("Exited from display section.");
-                    break;
-                }
-            }
-        }
-    }
-    public void update(){
-        while(!yes){
-            try{
-                Task[] arr = currentUser.getTaskArray();
-                boolean isTaskAvailable=false;
-                for(int i=0;i<currentUser.getTaskArray().length;i++){
-                    if(arr[i]!=null){
-                        Task Title=currentUser.getTaskArray()[i];
-                        System.out.print(i+1+".");
-                        System.out.println(Title.getTitle());
-                        isTaskAvailable=true;}
-
-                }
-                if(!isTaskAvailable){
-                    System.out.println("No task available in list");
-                    break;
-                }
-
-                System.out.println("Enter your task number to update:");
-                Integer upt = Integer.valueOf(sc.nextLine());
-                if (upt < currentUser.getTaskArray().length && currentUser.getTaskArray()[upt - 1] != null)
-                {
-                    String Status=currentUser.getTaskArray()[upt-1].getStatus();
-                    String description=currentUser.getTaskArray()[upt-1].getDescription();
-                    System.out.println("Status:"+Status);
-                    System.out.println("Description:"+description);
-                    System.out.println("Which you want to Update");
-                    System.out.println("1.Title");
-                    System.out.println("2.Status");
-                    System.out.println("3.Description");
-                    System.out.println("Enter your choice:");
-                    Integer cn = new Integer(sc.nextLine());
-                    if (cn == 1) {
-                        if (upt < currentUser.getTaskArray().length && currentUser.getTaskArray()[upt - 1] != null) {
-                            System.out.println("Enter what do you want to update:");
-                            Task upName = new Task(sc.nextLine());
-                            currentUser.getTaskArray()[upt - 1] = upName;
-                            System.out.println("your Task Title Updated!");
-                        }
-                        else {
-                            throw new Exception();
-                        }
-                        try {
-                            while (!yes) {
-                                System.out.println("Do you what to Continue?(yes/no)or give exit");
-                                String con = sc.nextLine();
-                                if (con.equals("yes")) {
-                                    yes=true;
-                                }
-                                else if (con.equals("no") || con.equals("exit")) {
-                                    throw new Exception();
-                                }
-                                else {
-                                    System.out.println("Enter proper value of string");
-                                }
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Your Exited!");
-                            break;
-                        }
-
-                    }
-                    else if (cn == 2) {
-
-                        while (true) {
-
-                            System.out.println("What Status are you now?");
-                            System.out.println("1.To Do");
-                            System.out.println("2.In Progress");
-                            System.out.println("3.Progress Done");
-                            System.out.println("Enter your choice:");
-                            Integer status = new Integer(sc.nextLine());
-                            if (status == 1) {
-                                currentUser.getTaskArray()[upt - 1].setStatus("To Do");
-                                System.out.println("Status Updated!");
-                                break;
-                            }
-                            else if (status == 2) {
-                                currentUser.getTaskArray()[upt - 1].setStatus("In Progress");
-                                System.out.println("Status Updated!");
-                                break;
-                            }
-                            else if (status == 3) {
-                                currentUser.getTaskArray()[upt - 1].setStatus("Progress Done");
-                                System.out.println("Status Updated!");
-                                break;
-                            }
-                            else {
-                                System.out.println("Enter proper choice");
-                            }
-                        }
-                    }
-                    else if (cn == 3) {
-                        System.out.println("Enter your Task Description:");
-                        String des = sc.nextLine();
-                        currentUser.getTaskArray()[upt - 1].setDescription(des);
-                        System.out.println("Your Description Updated");
-                    }
-                    else {
-                        System.out.println("Enter proper choice");
-                    }
+                if (listChoice.equals("1")) {
+                    String action = "";
+                    boolean isToDo = false;
                     try {
-                        while (!yes) {
-                            System.out.println("Do you what to Continue?(yes/no)or give exit");
-                            String con = sc.nextLine();
-                            if (con.equals("yes")) {
-                                break;
+                        int displayCount=1;
+                        for (i = 0; i < currentUser.getTask().size(); i++) {
+                            if( currentUser.getTask().get(i).getStatus().equals("ToDO")) {
+                                System.out.print(displayCount);
+                                    TaskUtil.Common(currentUser, i);
+                                    System.out.println("To DO");
+                                    isToDo = true;
+                                    displayCount++;
+                                        }
+                                else {
+                                    continue;
+                                }
                             }
-                            else if (con.equals("no") || con.equals("exit")) {
+
+
+                        if (!isToDo) {
+                            System.out.println("There is no Task!");
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                            action = sc.nextLine();
+                            if (action.equals("no") || (action.equals("exit"))) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
                                 throw new Exception();
                             }
                             else {
-                                System.out.println("Enter proper value of string");
+                                System.out.println("Enter valid String");
+                            }
+
+                        }
+                    } catch (Exception e) {
+
+                        if (action.equals("yes")) {
+                            continue;
+                        }
+                        else if (action.equals("no") || action.equals("exit")) {
+                            break;
+                        }
+                    }
+                }
+                else if (listChoice.equals("2")) {
+                    String action = "";
+                    boolean isOnProgress = false;
+                    int displayCount=1;
+                    try {
+                        for (i = 0; i < currentUser.getTask().size(); i++) {
+                                if (currentUser.getTask().get(i).getStatus().equals("On Progress")) {
+                                    System.out.print(displayCount);
+                                    TaskUtil.Common(currentUser, i);
+                                    System.out.println(currentUser.getTask().get(i).getStatus());
+                                    isOnProgress = true;
+                                    displayCount++;
+
+                                }
+                                else if (currentUser.getTask().get(i) == null) {
+                                    break;
+                                }
+
+                            }
+
+
+                        if (!isOnProgress) {
+                            System.out.println("There is no Task in 'On Progress'");
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                            action = sc.nextLine();
+                            //Main.Continue(action);
+                            if (action.equals("no") || (action.equals("exit"))) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
+                                throw new Exception();
+                            }
+                            else {
+                                System.out.println("Enter valid String");
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("Your Exited!");
-                        break;
+
+                        if (action.equals("yes")) {
+                            continue;
+                        }
+                        else if (action.equals("no") || action.equals("exit")) {
+                            break;
+                        }
+                        else {
+                            System.out.println("There is no Task");
+                        }
                     }
                 }
+
+                else if (listChoice.equals("3")) {
+                    String action = "";
+                    int displayCount=1;
+                    boolean isProgressDone = false;
+                    try {
+                        for (i = 0; i < currentUser.getTask().size(); i++) {
+                                if (currentUser.getTask().get(i).getStatus().equals("Progress Done")) {
+                                    System.out.print(displayCount+".");
+                                    TaskUtil.Common(currentUser, i);
+                                    System.out.println(currentUser.getTask().get(i).getStatus());
+                                    isProgressDone = true;
+                                    displayCount++;
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+
+                        if (!isProgressDone) {
+                            System.out.println("There is no Task in 'Progress Done' ");
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                            action = sc.nextLine();
+                            if (action.equals("no") || (action.equals("exit"))) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
+                                throw new Exception();
+                            }
+                            else {
+                                System.out.println("Enter valid String");
+
+                            }
+                        }
+                    } catch (Exception r) {
+                        if (action.equals("yes")) {
+                            continue;
+                        }
+                        else if (action.equals("no") || action.equals("exit")) {
+                            break;
+                        }
+                        else {
+                            System.out.println("There is no Task");
+                        }
+                    }
+
+                }
+                else if (listChoice.equals("4")) {
+                    String action = "";
+                    try {
+                        boolean Description = TaskUtil.Description(currentUser);//static method
+                        if (!Description) {
+                            System.out.println("No task Available to List!!");
+
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                            action = sc.nextLine();
+                            if (action.equals("no") || (action.equals("exit"))) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
+                                throw new Exception();
+                            }
+                            else {
+                                System.out.println("Enter valid String");
+                                continue;
+                            }
+                        }
+                    } catch (Exception e) {
+                        if (action.equals("yes")) {
+                            continue;
+                        }
+                        else if (action.equals("no") || action.equals("exit")) {
+                            break;
+                        }
+                        else {
+                            System.out.println("There is no Task");
+                        }
+                    }
+
+                }
                 else{
-                    throw new Exception();
+                    System.out.println("Enter the valid Choice!");
                 }
-
-            }catch(Exception e){
-                System.out.println("Enter the proper value to update!");
-                continue;
             }
-        }
-    }
-    public  void delete(){
-        try{
-            while(!yes){
-
-                Task[] arr = currentUser.getTaskArray();
-                boolean isTaskAvailable=false;
-                for(int i=0;i<currentUser.getTaskArray().length;i++){
-                    if(arr[i]!=null){
-                        Task Title=currentUser.getTaskArray()[i];
-                        System.out.print(i+1+".");
-                        System.out.println(Title.getTitle());
-                        isTaskAvailable=true;}
-
-                }
-                if(!isTaskAvailable){
-                    System.out.println("No task available in list");
+            catch (Exception c) {
+                if (listChoice.equals("exit")) {
+                    System.out.println("Display List Exited!");
                     break;
                 }
-                System.out.println("Enter task number to delete:");
-                Integer delNum= Integer.valueOf(sc.nextLine());
-                int delNumber=delNum-1;
-                if (delNumber < currentUser.getTaskArray().length && currentUser.getTaskArray()[delNumber] != null){
-                    currentUser.getTaskArray()[delNumber]=null;
-                    System.out.println("Your Task Deleted!");
+                else  {
+                    System.out.println("No task Available To Display!!");
+                    break;
                 }
-                for(int i=0;i<currentUser.getTaskArray().length;i++){
-                    if(currentUser.getTaskArray()[i]==null){
-                        for(int j=i+1;j<currentUser.getTaskArray().length;j++){
-                            if(currentUser.getTaskArray()[j]!=null){
-                                Task temp=currentUser.getTaskArray()[j];
-                                currentUser.getTaskArray()[j]=currentUser.getTaskArray()[i];
-                                currentUser.getTaskArray()[i]=temp;
+            }
+
+        }
+
+    }
+    public void Update() {
+
+        boolean exit = false;
+        String whatUpdate;
+        String action;
+        boolean taskOnly=false;
+        while (!exit) {
+            // boolean Description= TaskUtil.Description(currentUser);//static method
+            for(int i=0;i<currentUser.getTask().size();i++) {
+                TaskUtil.taskOnly(currentUser, i);
+                taskOnly=true;
+            }
+            if (!taskOnly) {
+                System.out.println("No Task to Update");
+                break;
+            }
+            try {
+                    Integer indexValue = 0;
+                    //while (indexValue != currentUser.getTask().size()) {
+
+                            try {
+                                if (currentUser.getTask().get(indexValue) == null) {
+                                    System.out.println("There is No task in Update!");
+                                    break;
+                                }
+                                else {
+                                    while (true) {
+                                        System.out.println("Enter the number of Task to update:");
+                                        Integer taskNum = Integer.valueOf(sc.nextLine());
+                                        indexValue = TaskUtil.indexValue(taskNum);
+                                        // if (indexValue != taskNum) {
+                                        //   throw new Exception();
+                                        //}
+
+                                        String status = currentUser.getTask().get(indexValue).getStatus();
+                                        String des = currentUser.getTask().get(indexValue).getDescription();
+                                        if (status == null) {
+                                            System.out.println("Status:" + "TO Do");
+                                        }
+                                        else {
+                                            System.out.println("Status:" + status);
+                                        }
+                                        System.out.println("Description:" + des);
+                                        if (indexValue >= 0 && indexValue < currentUser.getTask().size()) {
+                                            if (indexValue != indexValue) {
+                                                throw new Exception();
+                                            }
+                                            if (indexValue < currentUser.getTask().size()) {
+                                                break;
+                                            }
+                                            else {
+                                                System.out.println("Give the valid Task Number!");
+
+                                            }
+                                        }
+                                        else {
+                                            System.out.println("Enter Proper value!");
+
+                                        }
+                                    }
+                                }
+
+                            }catch(Exception e) {
+                                System.out.println("Enter a proper value in list");
+                                continue;
+
+                    }
+
+                    if(currentUser.getTask().get(indexValue)!=null) {
+                        System.out.println("What would you like to update?");
+                        System.out.println("1.Title");
+                        System.out.println("2.Status");
+                        System.out.println("3.Description");
+                        System.out.println("Enter your choice or give 'exit':");
+                        whatUpdate = (sc.nextLine());
+                        if (whatUpdate.equals("exit")) {
+                            throw new Exception();
+                        }
+
+                        if (whatUpdate.equals("1")) {
+                            //changed into static
+                            if (indexValue < currentUser.getTask().size() && currentUser.getTask().get(indexValue)!= null) {
+                                System.out.println("Enter the Task to Update:");
+                                String updateTask = sc.nextLine();
+                                currentUser.getTask().get(indexValue).setTitle(updateTask);
+                                System.out.println("Your Task Updated!");
+                            }
+                            else {
+
+                                System.out.println("Enter proper number to Update ");
+                            }
+                        }
+                        else if (whatUpdate.equals("2")) {
+
+                            if (indexValue < currentUser.getTask().size() && currentUser.getTask().get(indexValue) != null) {
+                                System.out.println("What is your Status now?");
+                                System.out.println("1.To Do");
+                                System.out.println("2.On Progress");
+                                System.out.println("3.Progress Done");
+                                System.out.println("Enter your current Status choice:");
+                                Integer statusChoice = new Integer(sc.nextLine());
+                                if (statusChoice == 1) {
+                                    currentUser.getTask().get(indexValue).setStatus(null);
+                                    System.out.println("Your Status Updated!");
+
+                                }
+                                if (statusChoice == 2) {
+                                    currentUser.getTask().get(indexValue).setStatus("On Progress");
+                                    System.out.println("Your Status Updated!");
+
+
+                                }
+                                if (statusChoice == 3) {
+                                    currentUser.getTask().get(indexValue).setStatus("Progress Done");
+                                    System.out.println("Your Status Updated!");
+                                }
+                            }
+                            else {
+                                System.out.println("Enter the Valid Status Choice!");
                             }
                         }
 
-                    }
-                }
-                try{
-                    while (!yes) {
-                        System.out.println("Do you what to Continue?(yes/no)or give exit");
-                        String con = sc.nextLine();
-                        if (con.equals("yes")) {
-                            break;
-                        }
-                        else if (con.equals("no") || con.equals("exit")) {
-                            throw new Exception();
+                        else if (whatUpdate.equals("3")) {
+                            if (indexValue < currentUser.getTask().size()&& currentUser.getTask().get(indexValue) != null) {
+                                System.out.println("Enter your Description:");
+                                String description = sc.nextLine();
+                                currentUser.getTask().get(indexValue).setDescription(description);
+                            }
+
+                            else {
+                                System.out.println("Please Enter Proper choice!");
+                                continue;
+                            }
+
                         }
                         else {
-                            System.out.println("Enter proper value of string");
+                            System.out.println("Enter the valid choice!");
+                            continue;
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no) or give 'exit' to Exit");
+                            action = sc.nextLine();
+                            TaskUtil.Continue(action);
+                            if (action.equals("no") || (action.equals("exit"))) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
+                                break;
+                            }
+                            else {
+                                System.out.println("Enter valid String");
+
+                            }
                         }
                     }
-                }catch(Exception e){
-                    System.out.println("Your Exited!");
+                    else{
+                        break;
+                    }
+                }
+                catch (Exception e) {
+                    System.out.println("It is Exited!");
                     break;
                 }
-            }
-        }catch(Exception e){
-            System.out.println("Enter the proper value to delete!");
 
         }
     }
+    public void Delete() {
+        // boolean Description= TaskUtil.Description(currentUser);
+        //static method
+        boolean taskOnly=false;
+        for(int i=0;i<currentUser.getTask().size();i++){
+            TaskUtil.taskOnly(currentUser,i);
+            taskOnly=true;}
+        if (!taskOnly) {
+            System.out.println("No task to Delete!");
 
-    public TaskManager(User user) {
-        this.currentUser = user;
+        }
+        else {
+            boolean exit = false;
+            String delNum;
+
+            while (!exit) {
+                try {
+                    // if(currentUser.getTask().get(indexValue)==null){
+                    //   System.out.println("There is No task in Delete!");
+                    // break;
+                    //}
+
+                        System.out.println("Enter the number of Task to delete or give 'exit' to Exit:");
+                        delNum = sc.nextLine();
+                        // int delnum = Integer.parseInt(sc.nextLine());
+                        if (delNum.equals("exit")) {
+                            throw new Exception();
+                        }
+                        //static method
+
+                        try {
+                            int index=((Integer.valueOf(delNum)));
+                           // Integer dulNum = new Integer(delNum);
+                            int indexValue = TaskUtil.indexValue(index);//static method
+                            if ( indexValue < currentUser.getTask().size()) {
+                                currentUser.getTask().remove(indexValue);
+                                System.out.println("Your Task Deleted!");
+                            }
+                            else {
+                                throw new Exception();
+                            }
+                            // if (currentUser.getTask() == null) {
+                            //   System.out.println("You Don't have task to delete! ");
+                            //}
+                            //  else {
+                            // if (indexValue < currentUser.getTask().size()&& currentUser.getTask().get(indexValue) != null) {
+                            //   currentUser.getTask().get(indexValue) = null;
+                            // for ( i = 0; i < currentUser.getTask().size(); i++) {
+                            //   if (currentUser.getTask().get(i) == null) {
+                            //     for (int j = i + 1; j < currentUser.getTask().size(); j++) {
+                            //       if (currentUser.getTask()[j] != null) {//Swap method
+                            //         Task temp = currentUser.getTask()[j];
+                            //       currentUser.getTask()[j] = currentUser.getTask()[i];
+                            //     currentUser.getTask()[i] = temp;
+                            //}
+                            // }
+                            // }
+                            //}
+
+                            // }
+                            // else {
+
+                            // System.out.println(" Enter proper number to delete!!,if no task in list give exit");
+                            //
+                            //}}}
+                        } catch (Exception e) {
+                            System.out.println("Enter a valid task Number!");
+                            continue;
+                        }
+                        while (!yes) {
+                            System.out.println("Do you want to Continue?(yes/no)or give 'exit");
+                            action = sc.nextLine();
+                            if (action.equals("no") || action.equals("exit")) {
+                                throw new Exception();
+                            }
+                            else if (action.equals("yes")) {
+                                break;
+                            }
+                            else {
+                                System.out.println("Enter valid String");
+                                continue;
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Delete Exited!");//static method
+                        break;
+                    }
+                }
+            }
+        }
     }
-}
+
+
