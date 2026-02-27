@@ -1,8 +1,7 @@
 public interface TaskManagerInterface {
     public void addTask();
-    public void listChoice();
-    public void Update();
-    public  void Delete();
-    public void setCurrentUser(User currentUser);
+    public void Display();
+    public void update();
+    public  void delete();
 
 }

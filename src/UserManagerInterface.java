@@ -1,7 +1,5 @@
-import java.util.List;
-
 public interface UserManagerInterface {
-    public UserInterface CheckUser();
-
+    public User getCurrentUser();
+    public void user();
 
 }

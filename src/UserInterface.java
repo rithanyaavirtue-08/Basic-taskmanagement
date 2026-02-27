@@ -1,6 +1,6 @@
-import java.util.List;
+import java.util.ArrayList;
 
 public interface UserInterface {
-    public String getUserName();
-    public List<Task> getTask();
+    public String getUsername();
+    public ArrayList<Task> getTaskArray();
 }

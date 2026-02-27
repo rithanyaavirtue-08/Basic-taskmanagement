@@ -1,43 +1,55 @@
-//import java.util.Scanner;
-
-public class Task implements TaskInterface{
+public class Task implements TaskInterface {
     private String title;
     private String Status;
-    private String description;
+    private String Description;
+    private String StartDateTime;
+    private String EndDateTime;
 
-    public Task(String title,String Status,String Description){
-this.title=title;
-this.Status=Status;
-this.description=Description;
-    }
-    public String getStatus() {
-        return Status;
-    }
+
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String task) {
-        this.title = task;
+    Task(String Title) {
+        this.title = Title;
     }
 
-    Task(String title, String toDo){
-        this.title=title;
+    Task(String title, String Status) {
+        this.title = title;
+        this.Status = Status;
     }
 
-    public void setStatus(String status) {
+    public String getStatus() {
+        return Status;
+    }
+
+    public String setStatus(String status) {
         Status = status;
+        return status;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        Description = description;
     }
 
+    public String getStartDateTime() {
+        return StartDateTime;
+    }
 
+    public void setStartDateTime(String startDateTime) {
+        StartDateTime = startDateTime;
+    }
 
+    public String getEndDateTime() {
+        return EndDateTime;
+    }
+
+    public void setEndDateTime(String endDateTime) {
+        EndDateTime = endDateTime;
+    }
 }
