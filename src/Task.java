@@ -5,12 +5,6 @@ public class Task implements TaskInterface {
     private String StartDateTime;
     private String EndDateTime;
 
-
-
-    public String getTitle() {
-        return title;
-    }
-
     Task(String Title) {
         this.title = Title;
     }
@@ -51,5 +45,14 @@ public class Task implements TaskInterface {
 
     public void setEndDateTime(String endDateTime) {
         EndDateTime = endDateTime;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
