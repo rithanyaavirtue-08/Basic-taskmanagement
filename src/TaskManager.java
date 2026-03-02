@@ -87,6 +87,24 @@ public class TaskManager implements TaskManagerInterface{
                     //  LocalDate date=LocalDate.parse(dates);
                     System.out.println(datetime);
                     currentUser.getTaskArray().get(taskCnt).setStartDateTime(String.valueOf(datetime));
+//                    System.out.println("Enter your End date& time:(dd-MM-yyyy HH:mm)");
+//                    String endDateTime = sc.nextLine();
+//                    DateTimeFormatter endFormate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+//                    LocalDateTime endDT = LocalDateTime.parse(endDateTime, endFormate);
+//                    currentUser.getTaskArray().get(taskCnt).setEndDateTime(String.valueOf(endDT));
+//
+//                    break;
+
+                }
+                else if (clan.equals("no")) {
+                    break;
+                }
+                else{
+                    System.out.println("Enter the proper value!");
+                }
+                System.out.println("Do you want to add Start and End Date&Time?(yes/no)");
+                String clans = sc.nextLine();
+                if (clans.equals("yes")) {
                     System.out.println("Enter your End date& time:(dd-MM-yyyy HH:mm)");
                     String endDateTime = sc.nextLine();
                     DateTimeFormatter endFormate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -96,7 +114,7 @@ public class TaskManager implements TaskManagerInterface{
                     break;
 
                 }
-                else if (clan.equals("no")) {
+                else if (clans.equals("no")) {
                     break;
                 }
                 else{
