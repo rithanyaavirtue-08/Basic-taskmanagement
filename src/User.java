@@ -1,22 +1,30 @@
-import java.util.ArrayList;
-
-public class User implements UserInterface {
-    private  String username;
-    private ArrayList<Task> taskArray=new ArrayList<>();
-    User(String username){
-        this.username=username;
-
-    }
+public class User{
+    private String username;
+    private String password;
+    private String []TaskArray=new String[10];
 
     public String getUsername() {
         return username;
     }
 
-
-    public ArrayList<Task> getTaskArray() {
-        return taskArray;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
+    public String[] getTaskArray() {
+        return TaskArray;
+    }
+
+    public void setTaskArray(String[] taskArray) {
+        TaskArray = taskArray;
+    }
 }
+
