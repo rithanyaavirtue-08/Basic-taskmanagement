@@ -1,10 +1,7 @@
 public class User{
     private String username;
     private String password;
-    private String []TaskArray=new String[10];
-
-
-
+    private Task []TaskArray=new Task[10];
     public String getUsername() {
         return username;
     }
@@ -21,11 +18,11 @@ public class User{
         this.password = password;
     }
 
-    public String[] getTaskArray() {
+    public Task[] getTaskArray() {
         return TaskArray;
     }
 
-    public void setTaskArray(String[] taskArray) {
+    public void setTaskArray(Task[] taskArray) {
         TaskArray = taskArray;
     }
     public User(String username,String password){
