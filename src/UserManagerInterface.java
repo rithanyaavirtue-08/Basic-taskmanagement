@@ -1,5 +1,8 @@
 public interface UserManagerInterface {
-    public User getCurrentUser();
-    public void user();
+    public void Create(User currentUser);
+    public void Read(User currentUser);
+    public void Update(User currentUser);
+    public void Delete(User currentUser);
+
 
 }

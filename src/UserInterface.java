@@ -1,6 +1,9 @@
-import java.util.ArrayList;
-
 public interface UserInterface {
     public String getUsername();
-    public ArrayList<Task> getTaskArray();
+    public String getPassword();
+    public Task[] getTaskArray();
+
+
+
+
 }
