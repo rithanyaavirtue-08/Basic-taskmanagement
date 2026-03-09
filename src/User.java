@@ -1,33 +1,17 @@
-import java.util.Scanner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements UserInterface {
-    private String username;
-    private String password;
-    private Task []TaskArray=new Task[10];
-
-
-
-    public String getUsername() {
-        return username;
+    private String userName;
+    List<Task> Task=new ArrayList<>();
+    public String getUserName() {
+        return userName;
     }
-
-    public String getPassword() {
-        return password;
+    User(String username){
+        this.userName=username;
     }
-
-    public Task[] getTaskArray() {
-        return TaskArray;
+    public List<Task> getTask() {
+      return Task;
     }
-
-
-    public User(String username,String password){
-        this.username=username;
-        this.password=password;
-    }
-
-
-
-
-
-}
-
+     }

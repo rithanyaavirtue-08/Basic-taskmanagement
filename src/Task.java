@@ -1,22 +1,33 @@
+//import java.util.Scanner;
+
 public class Task implements TaskInterface{
     private String title;
-    private String status;
+    private String Status;
     private String description;
+
+    public Task(String title,String Status,String Description){
+this.title=title;
+this.Status=Status;
+this.description=Description;
+    }
+    public String getStatus() {
+        return Status;
+    }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String task) {
+        this.title = task;
     }
 
-    public String getStatus() {
-        return status;
+    Task(String title, String toDo){
+        this.title=title;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        Status = status;
     }
 
     public String getDescription() {
@@ -26,8 +37,7 @@ public class Task implements TaskInterface{
     public void setDescription(String description) {
         this.description = description;
     }
-    public Task(String title,String status){
-        this.title=title;
-        this.status=status;
-    }
+
+
+
 }
